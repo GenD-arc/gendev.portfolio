@@ -63,3 +63,7 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+
+.motion-div {
+  will-change: transform, opacity;
+}

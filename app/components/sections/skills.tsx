@@ -1,39 +1,19 @@
-// app/components/sections/skills.tsx
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
 import { useTheme } from "../theme-provider";
 import { motion } from "framer-motion";
 import { SpringBorder, SummerBorder, AutumnBorder, WinterBorder } from "../seasonal-borders";
+import { skills } from "../../../data/profile";
 
 type SkillCategory = "Frontend" | "Backend" | "Mobile" | "Language" | "Tools" | "Design";
 
-const skillsByCategory: Record<SkillCategory, { name: string; level: number }[]> = {
-  Frontend: [
-    { name: "Next.js", level: 95 },
-    { name: "React", level: 95 },
-    { name: "HTML / CSS", level: 98 },
-    { name: "Tailwind CSS", level: 92 },
-  ],
-  Backend: [
-    { name: "Node.js", level: 85 },
-    { name: "Express", level: 85 },
-    { name: "REST APIs", level: 90 },
-  ],
-  Mobile: [
-    { name: "Flutter", level: 90 },
-  ],
-  Language: [
-    { name: "TypeScript", level: 90 },
-    { name: "JavaScript", level: 95 },
-  ],
-  Tools: [
-    { name: "Git / GitHub", level: 88 },
-  ],
-  Design: [
-    { name: "Figma", level: 75 },
-  ],
-};
+const skillsByCategory = skills.reduce((acc, skill) => {
+  const cat = skill.category as SkillCategory;
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push({ name: skill.name, level: skill.level });
+  return acc;
+}, {} as Record<SkillCategory, { name: string; level: number }[]>);
 
 const categoryMeta: Record<SkillCategory, { color: string; icon: string; label: string }> = {
   Frontend: { color: "#60A5FA", icon: "◢", label: "Frontend" },
@@ -124,7 +104,6 @@ export default function Skills() {
       id="skills"
       style={{ position: "relative", padding: "120px 24px", maxWidth: "1100px", margin: "0 auto" }}
     >
-      {/* Header */}
       <motion.div
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
@@ -141,100 +120,59 @@ export default function Skills() {
           color: theme.colors.text, fontFamily: "var(--font-space)",
           margin: 0, lineHeight: 1.15, maxWidth: "500px",
         }}>
-          Technologies
-          <br />
+          Technologies<br />
           <span style={{ color: theme.colors.primary }}>I work with</span>
         </h2>
       </motion.div>
 
-      {/* Grid */}
       <div style={{ display: "grid", gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: "16px" }}>
         {(Object.keys(skillsByCategory) as SkillCategory[]).map((category, catIndex) => {
           const meta = categoryMeta[category];
-          const skills = skillsByCategory[category];
+          const categorySkills = skillsByCategory[category];
 
           return (
             <motion.div
               key={category}
               variants={anim.item}
               transition={{ ...anim.transition, delay: catIndex * anim.stagger }}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportConfig}
+              initial="hidden" whileInView="visible" viewport={viewportConfig}
               whileHover={{ y: -2 }}
               style={{
-                backgroundColor: theme.colors.surface,
-                borderRadius: "16px",
-                padding: "24px",
-                border: `1px solid ${theme.colors.border}`,
-                position: "relative",
-                overflow: "hidden",
-                transition: "border-color 0.3s",
+                backgroundColor: theme.colors.surface, borderRadius: "16px", padding: "24px",
+                border: `1px solid ${theme.colors.border}`, position: "relative",
+                overflow: "hidden", transition: "border-color 0.3s",
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${meta.color}40`; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = theme.colors.border; }}
             >
               {getBorderDecoration(category)}
 
-              {/* Category header */}
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "18px", position: "relative", zIndex: 1 }}>
-                <span style={{
-                  fontSize: "1.3rem",
-                  color: meta.color,
-                  fontWeight: 700,
-                }}>
-                  {meta.icon}
-                </span>
-                <span style={{
-                  fontSize: "0.75rem",
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  color: meta.color,
-                }}>
+                <span style={{ fontSize: "1.3rem", color: meta.color, fontWeight: 700 }}>{meta.icon}</span>
+                <span style={{ fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: meta.color }}>
                   {meta.label}
                 </span>
               </div>
 
-              {/* Skills — tag style instead of bars */}
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", position: "relative", zIndex: 1 }}>
-                {skills.map((skill) => (
-                  <span
-                    key={skill.name}
-                    style={{
-                      padding: "5px 12px",
-                      borderRadius: "8px",
-                      fontSize: "0.75rem",
-                      fontWeight: 500,
-                      backgroundColor: `${meta.color}10`,
-                      color: meta.color,
-                      border: `1px solid ${meta.color}20`,
-                    }}
-                  >
+                {categorySkills.map((skill) => (
+                  <span key={skill.name} style={{
+                    padding: "5px 12px", borderRadius: "8px", fontSize: "0.75rem", fontWeight: 500,
+                    backgroundColor: `${meta.color}10`, color: meta.color,
+                    border: `1px solid ${meta.color}20`,
+                  }}>
                     {skill.name}
                   </span>
                 ))}
               </div>
 
-              {/* Subtle level indicator stripe at bottom */}
-              <div style={{
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: "2px",
-                background: `${theme.colors.border}`,
-              }}>
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "2px", background: `${theme.colors.border}` }}>
                 <motion.div
                   initial={{ width: 0 }}
-                  whileInView={{ width: `${Math.max(...skills.map(s => s.level))}%` }}
+                  whileInView={{ width: `${Math.max(...categorySkills.map(s => s.level))}%` }}
                   viewport={viewportConfig}
                   transition={{ duration: 1, delay: 0.3 + catIndex * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    height: "100%",
-                    background: meta.color,
-                    opacity: 0.6,
-                  }}
+                  style={{ height: "100%", background: meta.color, opacity: 0.6 }}
                 />
               </div>
             </motion.div>
@@ -242,14 +180,10 @@ export default function Skills() {
         })}
       </div>
 
-      {/* Footer */}
       <motion.p
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
-        style={{
-          fontSize: "0.75rem", color: theme.colors.textSecondary,
-          opacity: 0.4, marginTop: "28px", textAlign: "right",
-        }}
+        style={{ fontSize: "0.75rem", color: theme.colors.textSecondary, opacity: 0.4, marginTop: "28px", textAlign: "right" }}
       >
         {themeName === "spring" && "🌱 Always growing — exploring Rust & WASM"}
         {themeName === "summer" && "☀️ In my element with these tools"}

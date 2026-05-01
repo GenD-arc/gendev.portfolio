@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 
 import { useTheme } from "./components/theme-provider";
@@ -8,6 +7,7 @@ import Hero from "./components/sections/hero";
 import About from "./components/sections/about";
 import Skills from "./components/sections/skills";
 import Projects from "./components/sections/projects";
+import Testimonials from "./components/sections/testimonials";
 import Contact from "./components/sections/contact";
 import Footer from "./components/footer";
 
@@ -30,6 +30,9 @@ export default function Home() {
       </ErrorBoundary>
       <ErrorBoundary key={`projects-${replayKey}`}>
         <Projects />
+      </ErrorBoundary>
+      <ErrorBoundary key={`testimonials-${replayKey}`}>
+        <Testimonials />
       </ErrorBoundary>
       <ErrorBoundary key={`contact-${replayKey}`}>
         <Contact />

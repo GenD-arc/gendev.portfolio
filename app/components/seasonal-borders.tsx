@@ -1,4 +1,3 @@
-// app/components/seasonal-borders.tsx
 "use client";
 
 import React from "react";

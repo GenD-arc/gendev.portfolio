@@ -1,4 +1,3 @@
-// app/hooks/use-reduced-motion.ts
 "use client";
 
 import { useMediaQuery } from "./use-media-query";

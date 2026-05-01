@@ -1,10 +1,10 @@
-// app/components/sections/contact.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { useTheme } from "../theme-provider";
 import { motion } from "framer-motion";
 import { SpringBorder, SummerBorder, AutumnBorder, WinterBorder } from "../seasonal-borders";
+import { profile } from "../../../data/profile";
 
 const seasonalAnims = {
   spring: {
@@ -70,29 +70,29 @@ export default function Contact() {
   };
 
   const contactInfo = [
-    { label: "Email", value: "genesis@example.com" },
-    { label: "Location", value: "Remote — Worldwide" },
-    { label: "Availability", value: "Freelance & contract" },
+    { label: "Email", value: profile.email },
+    { label: "Location", value: profile.location },
+    { label: "Availability", value: profile.availability },
+  ];
+
+  const socialPlatforms = [
+    { name: "GitHub", url: profile.socials.github },
+    { name: "LinkedIn", url: profile.socials.linkedin },
+    { name: "Twitter", url: profile.socials.twitter },
   ];
 
   const inputBaseStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "14px 16px",
-    borderRadius: "10px",
-    fontSize: "0.875rem",
-    backgroundColor: "transparent",
-    border: `1px solid ${theme.colors.border}`,
-    color: theme.colors.text,
-    outline: "none",
-    transition: "all 0.3s ease",
-    boxSizing: "border-box",
-    fontFamily: "inherit",
+    width: "100%", padding: "14px 16px", borderRadius: "10px",
+    fontSize: "0.875rem", backgroundColor: "transparent",
+    border: `1px solid ${theme.colors.border}`, color: theme.colors.text,
+    outline: "none", transition: "all 0.3s ease",
+    boxSizing: "border-box", fontFamily: "inherit",
   };
 
   const inputFocusStyle: React.CSSProperties = {
-  border: `1px solid ${theme.colors.primary}`,
-  boxShadow: `0 0 0 3px ${theme.colors.primary}08`,
-};
+    border: `1px solid ${theme.colors.primary}`,
+    boxShadow: `0 0 0 3px ${theme.colors.primary}08`,
+  };
 
   if (!mounted) {
     return (
@@ -113,7 +113,6 @@ export default function Contact() {
 
   return (
     <section id="contact" style={{ position: "relative", padding: "120px 24px", maxWidth: "1100px", margin: "0 auto" }}>
-      {/* Header */}
       <motion.div
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
@@ -133,7 +132,6 @@ export default function Contact() {
       </motion.div>
 
       <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "48px", maxWidth: "800px", margin: "0 auto" }}>
-        {/* Left: Contact info */}
         <motion.div
           variants={anim.item} transition={anim.transition}
           initial="hidden" whileInView="visible" viewport={viewportConfig}
@@ -150,36 +148,32 @@ export default function Contact() {
             </div>
           ))}
 
-          {/* Social */}
           <div style={{ paddingTop: "8px" }}>
             <div style={{ fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: theme.colors.textSecondary, opacity: 0.5, marginBottom: "10px" }}>
               Social
             </div>
             <div style={{ display: "flex", gap: "8px" }}>
-              {["GitHub", "LinkedIn", "Twitter"].map((platform) => (
+              {socialPlatforms.map((platform) => (
                 <motion.a
-                  key={platform} href="#"
+                  key={platform.name} href={platform.url} target="_blank" rel="noopener noreferrer"
                   whileHover={{ y: -2 }}
                   style={{
-                    padding: "10px 16px", borderRadius: "8px",
-                    fontSize: "0.78rem", fontWeight: 500,
+                    padding: "10px 16px", borderRadius: "8px", fontSize: "0.78rem", fontWeight: 500,
                     backgroundColor: theme.colors.surface,
                     border: `1px solid ${theme.colors.border}`,
-                    color: theme.colors.textSecondary,
-                    textDecoration: "none",
+                    color: theme.colors.textSecondary, textDecoration: "none",
                     transition: "all 0.2s",
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = theme.colors.primary; e.currentTarget.style.color = theme.colors.primary; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = theme.colors.border; e.currentTarget.style.color = theme.colors.textSecondary; }}
                 >
-                  {platform}
+                  {platform.name}
                 </motion.a>
               ))}
             </div>
           </div>
         </motion.div>
 
-        {/* Right: Form */}
         <motion.form
           variants={anim.item} transition={anim.transition}
           initial="hidden" whileInView="visible" viewport={viewportConfig}
@@ -187,34 +181,25 @@ export default function Contact() {
           style={{ display: "flex", flexDirection: "column", gap: "16px", position: "relative" }}
         >
           <div>
-            <input
-              type="text" required
-              value={formState.name}
+            <input type="text" required value={formState.name}
               onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-              onFocus={() => setFocusedField("name")}
-              onBlur={() => setFocusedField(null)}
+              onFocus={() => setFocusedField("name")} onBlur={() => setFocusedField(null)}
               style={{ ...inputBaseStyle, ...(focusedField === "name" ? inputFocusStyle : {}) }}
               placeholder="Your name"
             />
           </div>
           <div>
-            <input
-              type="email" required
-              value={formState.email}
+            <input type="email" required value={formState.email}
               onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-              onFocus={() => setFocusedField("email")}
-              onBlur={() => setFocusedField(null)}
+              onFocus={() => setFocusedField("email")} onBlur={() => setFocusedField(null)}
               style={{ ...inputBaseStyle, ...(focusedField === "email" ? inputFocusStyle : {}) }}
               placeholder="you@example.com"
             />
           </div>
           <div>
-            <textarea
-              required rows={4}
-              value={formState.message}
+            <textarea required rows={4} value={formState.message}
               onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-              onFocus={() => setFocusedField("message")}
-              onBlur={() => setFocusedField(null)}
+              onFocus={() => setFocusedField("message")} onBlur={() => setFocusedField(null)}
               style={{ ...inputBaseStyle, ...(focusedField === "message" ? inputFocusStyle : {}), resize: "vertical", minHeight: "100px" }}
               placeholder="What are you looking to build?"
             />
@@ -227,12 +212,10 @@ export default function Contact() {
             whileHover={submitted ? {} : { scale: 1.01 }}
             whileTap={submitted ? {} : { scale: 0.99 }}
             style={{
-              padding: "14px 24px", borderRadius: "10px",
-              fontWeight: 600, fontSize: "0.85rem",
+              padding: "14px 24px", borderRadius: "10px", fontWeight: 600, fontSize: "0.85rem",
               backgroundColor: submitted ? "#22c55e" : theme.colors.primary,
               color: "#fff", border: "none",
-              cursor: submitted ? "default" : "pointer",
-              transition: "all 0.3s",
+              cursor: submitted ? "default" : "pointer", transition: "all 0.3s",
               boxShadow: submitted ? "none" : `0 4px 16px ${theme.colors.primary}20`,
               position: "relative", overflow: "visible",
             }}

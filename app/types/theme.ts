@@ -1,4 +1,3 @@
-// types/theme.ts
 export type ThemeName = "spring" | "summer" | "autumn" | "winter";
 
 export interface ThemeConfig {

@@ -1,4 +1,3 @@
-// app/components/theme-background.tsx
 "use client";
 
 import React, { useMemo, useState, useEffect } from "react";
@@ -23,8 +22,17 @@ function seededRandom(seed: number): number {
 
 // ─── SPRING ───
 function CherryBlossoms() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const petals = useMemo(() => {
-    return Array.from({ length: 20 }, (_, i) => ({
+    const count = isMobile ? 10 : 20;
+    return Array.from({ length: count }, (_, i) => ({
       id: i,
       left: seededRandom(i * 7 + 1) * 100,
       delay: seededRandom(i * 13 + 2) * 10,
@@ -32,7 +40,7 @@ function CherryBlossoms() {
       size: 8 + seededRandom(i * 23 + 4) * 12,
       rotation: seededRandom(i * 29 + 5) * 360,
     }));
-  }, []);
+  }, [isMobile]);
 
   return (
     <ClientOnly>
@@ -41,34 +49,20 @@ function CherryBlossoms() {
           <motion.div
             key={petal.id}
             style={{
-              position: "absolute",
-              top: "-5%",
-              left: `${petal.left}%`,
-              width: `${petal.size}px`,
-              height: `${petal.size}px`,
+              position: "absolute", top: "-5%", left: `${petal.left}%`,
+              width: `${petal.size}px`, height: `${petal.size}px`,
               background: "radial-gradient(circle, rgba(255,183,197,0.8) 0%, rgba(236,72,153,0.4) 60%, transparent 100%)",
-              borderRadius: "50% 0 50% 0",
+              borderRadius: "50% 0 50% 0", willChange: "transform, opacity",
             }}
             animate={{
-              y: ["0vh", "105vh"],
-              x: [0, Math.sin(petal.delay) * 120, Math.cos(petal.delay) * 60, 0],
-              rotate: [petal.rotation, petal.rotation + 360],
-              opacity: [0, 0.9, 0.8, 0],
+              y: ["0vh", "105vh"], x: [0, Math.sin(petal.delay) * 120, Math.cos(petal.delay) * 60, 0],
+              rotate: [petal.rotation, petal.rotation + 360], opacity: [0, 0.9, 0.8, 0],
             }}
-            transition={{
-              duration: petal.duration,
-              delay: petal.delay,
-              repeat: Infinity,
-              ease: "linear",
-            }}
+            transition={{ duration: petal.duration, delay: petal.delay, repeat: Infinity, ease: "linear" }}
           />
         ))}
         <motion.div
-          style={{
-            position: "absolute",
-            bottom: 0, left: 0, right: 0, height: "30%",
-            background: `linear-gradient(0deg, rgba(236,72,153,0.08) 0%, transparent 100%)`,
-          }}
+          style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "30%", background: `linear-gradient(0deg, rgba(236,72,153,0.08) 0%, transparent 100%)` }}
           animate={{ opacity: [0.5, 0.8, 0.5] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         />
@@ -79,17 +73,22 @@ function CherryBlossoms() {
 
 // ─── SUMMER ───
 function Fireflies() {
-  const flies = useMemo(() => {
-    return Array.from({ length: 10 }, (_, i) => ({
-      id: i,
-      left: seededRandom(i * 31 + 7) * 100,
-      top: 35 + seededRandom(i * 17 + 3) * 55,
-      delay: seededRandom(i * 41 + 11) * 5,
-      size: 2 + seededRandom(i * 53 + 13) * 3,
-      wanderX: seededRandom(i * 59 + 17) * 40 - 20,
-      wanderY: seededRandom(i * 37 + 19) * 30 - 15,
-    }));
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
+
+  const flies = useMemo(() => {
+    const count = isMobile ? 5 : 10;
+    return Array.from({ length: count }, (_, i) => ({
+      id: i, left: seededRandom(i * 31 + 7) * 100, top: 35 + seededRandom(i * 17 + 3) * 55,
+      delay: seededRandom(i * 41 + 11) * 5, size: 2 + seededRandom(i * 53 + 13) * 3,
+      wanderX: seededRandom(i * 59 + 17) * 40 - 20, wanderY: seededRandom(i * 37 + 19) * 30 - 15,
+    }));
+  }, [isMobile]);
 
   return (
     <ClientOnly>
@@ -98,26 +97,13 @@ function Fireflies() {
           <motion.div
             key={fly.id}
             style={{
-              position: "absolute",
-              left: `${fly.left}%`,
-              top: `${fly.top}%`,
-              width: `${fly.size}px`,
-              height: `${fly.size}px`,
-              backgroundColor: "#FDE047",
-              borderRadius: "50%",
+              position: "absolute", left: `${fly.left}%`, top: `${fly.top}%`,
+              width: `${fly.size}px`, height: `${fly.size}px`, backgroundColor: "#FDE047",
+              borderRadius: "50%", willChange: "transform, opacity",
               boxShadow: "0 0 6px 2px rgba(253,224,71,0.5), 0 0 12px 4px rgba(253,224,71,0.2)",
             }}
-            animate={{
-              x: [0, fly.wanderX, -fly.wanderX * 0.7, fly.wanderX * 0.5, 0],
-              y: [0, fly.wanderY, -fly.wanderY * 0.8, fly.wanderY * 0.4, 0],
-              opacity: [0, 1, 0.4, 0.8, 0],
-            }}
-            transition={{
-              duration: 4 + fly.delay,
-              delay: fly.delay,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            animate={{ x: [0, fly.wanderX, -fly.wanderX * 0.7, fly.wanderX * 0.5, 0], y: [0, fly.wanderY, -fly.wanderY * 0.8, fly.wanderY * 0.4, 0], opacity: [0, 1, 0.4, 0.8, 0] }}
+            transition={{ duration: 4 + fly.delay, delay: fly.delay, repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
       </div>
@@ -127,20 +113,25 @@ function Fireflies() {
 
 // ─── AUTUMN ───
 function FallingLeaves() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const leafColors = ["#F97316", "#EF4444", "#FBBF24", "#B91C1C", "#D97706", "#EA580C"];
   const leaves = useMemo(() => {
-    return Array.from({ length: 18 }, (_, i) => ({
-      id: i,
-      left: seededRandom(i * 43 + 13) * 100,
-      delay: seededRandom(i * 27 + 7) * 8,
-      duration: 5 + seededRandom(i * 31 + 17) * 7,
-      size: 10 + seededRandom(i * 19 + 3) * 16,
-      rotation: seededRandom(i * 37 + 23) * 360,
-      swayA: seededRandom(i * 47 + 29) * 80,
+    const count = isMobile ? 8 : 18;
+    return Array.from({ length: count }, (_, i) => ({
+      id: i, left: seededRandom(i * 43 + 13) * 100, delay: seededRandom(i * 27 + 7) * 8,
+      duration: 5 + seededRandom(i * 31 + 17) * 7, size: 10 + seededRandom(i * 19 + 3) * 16,
+      rotation: seededRandom(i * 37 + 23) * 360, swayA: seededRandom(i * 47 + 29) * 80,
       swayB: seededRandom(i * 53 + 31) * 60,
       color: leafColors[Math.floor(seededRandom(i * 61 + 37) * leafColors.length)],
     }));
-  }, []);
+  }, [isMobile]);
 
   return (
     <ClientOnly>
@@ -149,46 +140,17 @@ function FallingLeaves() {
           <motion.div
             key={leaf.id}
             style={{
-              position: "absolute",
-              top: "-8%",
-              left: `${leaf.left}%`,
-              width: `${leaf.size}px`,
-              height: `${leaf.size * 0.7}px`,
-              backgroundColor: leaf.color,
-              borderRadius: "20% 80% 30% 70%",
-              opacity: 0.7,
+              position: "absolute", top: "-8%", left: `${leaf.left}%`,
+              width: `${leaf.size}px`, height: `${leaf.size * 0.7}px`,
+              backgroundColor: leaf.color, borderRadius: "20% 80% 30% 70%",
+              opacity: 0.7, willChange: "transform, opacity",
             }}
-            animate={{
-              y: ["0vh", "105vh"],
-              x: [0, leaf.swayA, -leaf.swayB, leaf.swayA * 0.6, 0],
-              rotate: [leaf.rotation, leaf.rotation + 540, leaf.rotation + 720],
-              opacity: [0, 0.85, 0.7, 0],
-            }}
-            transition={{
-              duration: leaf.duration,
-              delay: leaf.delay,
-              repeat: Infinity,
-              ease: "linear",
-            }}
+            animate={{ y: ["0vh", "105vh"], x: [0, leaf.swayA, -leaf.swayB, leaf.swayA * 0.6, 0], rotate: [leaf.rotation, leaf.rotation + 540, leaf.rotation + 720], opacity: [0, 0.85, 0.7, 0] }}
+            transition={{ duration: leaf.duration, delay: leaf.delay, repeat: Infinity, ease: "linear" }}
           />
         ))}
-        <motion.div
-          style={{
-            position: "absolute", bottom: 0, left: 0, right: 0, height: "25%",
-            background: "linear-gradient(0deg, rgba(249,115,22,0.12) 0%, transparent 100%)",
-          }}
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          style={{
-            position: "absolute", bottom: "10%", right: "15%",
-            width: "200px", height: "200px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(255,140,30,0.35) 0%, rgba(255,100,20,0.15) 40%, transparent 70%)",
-          }}
-          animate={{ scale: [1, 1.2, 1], opacity: [0.6, 0.9, 0.6] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <motion.div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "25%", background: "linear-gradient(0deg, rgba(249,115,22,0.12) 0%, transparent 100%)" }} animate={{ opacity: [0.6, 1, 0.6] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.div style={{ position: "absolute", bottom: "10%", right: "15%", width: "200px", height: "200px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,140,30,0.35) 0%, rgba(255,100,20,0.15) 40%, transparent 70%)" }} animate={{ scale: [1, 1.2, 1], opacity: [0.6, 0.9, 0.6] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
       </div>
     </ClientOnly>
   );
@@ -196,16 +158,22 @@ function FallingLeaves() {
 
 // ─── WINTER ───
 function Snowfall() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const snowflakes = useMemo(() => {
-    return Array.from({ length: 35 }, (_, i) => ({
-      id: i,
-      left: seededRandom(i * 29 + 11) * 100,
-      delay: seededRandom(i * 17 + 3) * 10,
-      duration: 4 + seededRandom(i * 23 + 7) * 6,
-      size: 2 + seededRandom(i * 31 + 13) * 5,
+    const count = isMobile ? 15 : 35;
+    return Array.from({ length: count }, (_, i) => ({
+      id: i, left: seededRandom(i * 29 + 11) * 100, delay: seededRandom(i * 17 + 3) * 10,
+      duration: 4 + seededRandom(i * 23 + 7) * 6, size: 2 + seededRandom(i * 31 + 13) * 5,
       drift: seededRandom(i * 37 + 19) * 80 - 40,
     }));
-  }, []);
+  }, [isMobile]);
 
   return (
     <ClientOnly>
@@ -214,36 +182,16 @@ function Snowfall() {
           <motion.div
             key={flake.id}
             style={{
-              position: "absolute",
-              top: "-5%",
-              left: `${flake.left}%`,
-              width: `${flake.size}px`,
-              height: `${flake.size}px`,
-              backgroundColor: "white",
-              borderRadius: "50%",
-              opacity: 0.8,
+              position: "absolute", top: "-5%", left: `${flake.left}%`,
+              width: `${flake.size}px`, height: `${flake.size}px`,
+              backgroundColor: "white", borderRadius: "50%",
+              opacity: 0.8, willChange: "transform, opacity",
             }}
-            animate={{
-              y: ["0vh", "105vh"],
-              x: [0, flake.drift * 0.6, flake.drift, flake.drift * 0.4, 0],
-              opacity: [0, 0.9, 0.7, 0.5, 0],
-            }}
-            transition={{
-              duration: flake.duration,
-              delay: flake.delay,
-              repeat: Infinity,
-              ease: "linear",
-            }}
+            animate={{ y: ["0vh", "105vh"], x: [0, flake.drift * 0.6, flake.drift, flake.drift * 0.4, 0], opacity: [0, 0.9, 0.7, 0.5, 0] }}
+            transition={{ duration: flake.duration, delay: flake.delay, repeat: Infinity, ease: "linear" }}
           />
         ))}
-        <motion.div
-          style={{
-            position: "absolute", bottom: 0, left: 0, right: 0, height: "15%",
-            background: "linear-gradient(0deg, rgba(200,220,255,0.06) 0%, transparent 100%)",
-          }}
-          animate={{ opacity: [0.4, 0.7, 0.4] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <motion.div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "15%", background: "linear-gradient(0deg, rgba(200,220,255,0.06) 0%, transparent 100%)" }} animate={{ opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
       </div>
     </ClientOnly>
   );

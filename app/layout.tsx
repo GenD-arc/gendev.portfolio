@@ -1,11 +1,12 @@
-// app/layout.tsx
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./components/theme-provider";
 import ThemeToggle from "./components/theme-toggle";
 import ThemeBackground from "./components/theme-background";
+import CustomCursor from "./components/custom-cursor";
 import { ErrorBoundary } from "./components/error-boundary";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -85,11 +86,13 @@ export default function RootLayout({
       >
         <ErrorBoundary>
           <ThemeProvider>
+            <CustomCursor />
             <ThemeBackground />
             <ThemeToggle />
             {children}
           </ThemeProvider>
         </ErrorBoundary>
+        <Analytics />
       </body>
     </html>
   );

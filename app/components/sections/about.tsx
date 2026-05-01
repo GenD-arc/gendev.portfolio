@@ -1,10 +1,10 @@
-// app/components/sections/about.tsx
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
 import { useTheme } from "../theme-provider";
 import { motion } from "framer-motion";
 import { SpringBorder, SummerBorder, AutumnBorder, WinterBorder } from "../seasonal-borders";
+import { profile, services } from "../../../data/profile";
 
 const seasonalAnims = {
   spring: {
@@ -28,13 +28,6 @@ const seasonalAnims = {
     stagger: 0.13,
   },
 };
-
-const services = [
-  { title: "Web Development", desc: "Next.js, React, TypeScript — fast, SEO-optimized, scalable.", icon: "🌐" },
-  { title: "Mobile Apps", desc: "Cross-platform Flutter apps with native performance.", icon: "📱" },
-  { title: "UI/UX Design", desc: "Clean interfaces that convert visitors into customers.", icon: "🎨" },
-  { title: "API Architecture", desc: "Robust backends with Node.js, Express & REST APIs.", icon: "⚙️" },
-];
 
 export default function About() {
   const { theme, themeName } = useTheme();
@@ -98,7 +91,6 @@ export default function About() {
       id="about"
       style={{ position: "relative", padding: "120px 24px", maxWidth: "1100px", margin: "0 auto" }}
     >
-      {/* Section label */}
       <motion.div
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
@@ -110,18 +102,13 @@ export default function About() {
         </span>
       </motion.div>
 
-      {/* Headline */}
       <motion.h2
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
         style={{
-          fontSize: "clamp(2rem, 4vw, 3rem)",
-          fontWeight: 700,
-          lineHeight: 1.15,
-          color: theme.colors.text,
-          fontFamily: "var(--font-space)",
-          margin: "0 0 16px",
-          maxWidth: "600px",
+          fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700, lineHeight: 1.15,
+          color: theme.colors.text, fontFamily: "var(--font-space)",
+          margin: "0 0 16px", maxWidth: "600px",
         }}
       >
         I turn complex problems
@@ -130,32 +117,23 @@ export default function About() {
         <span style={{ color: theme.colors.primary }}>elegant solutions</span>
       </motion.h2>
 
-      {/* Short bio */}
       <motion.p
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
         style={{
-          fontSize: "1rem",
-          lineHeight: 1.7,
-          color: theme.colors.textSecondary,
-          margin: "0 0 48px",
-          maxWidth: "560px",
+          fontSize: "1rem", lineHeight: 1.7, color: theme.colors.textSecondary,
+          margin: "0 0 48px", maxWidth: "560px",
         }}
       >
-        I&apos;m Genesis — a freelance developer with 5+ years of experience crafting
-        performant web and mobile applications. I partner with startups and agencies
-        to ship products that users love.
+        {profile.bio}
       </motion.p>
 
-      {/* Services grid */}
       <motion.div
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
         style={{
-          display: "grid",
-          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
-          gap: "16px",
-          marginBottom: "56px",
+          display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+          gap: "16px", marginBottom: "56px",
         }}
       >
         {services.map((service, i) => (
@@ -169,12 +147,9 @@ export default function About() {
             style={{
               backgroundColor: theme.colors.surface,
               border: `1px solid ${theme.colors.border}`,
-              borderRadius: "14px",
-              padding: "24px",
-              position: "relative",
-              overflow: "visible",
-              cursor: "default",
-              transition: "border-color 0.3s",
+              borderRadius: "14px", padding: "24px",
+              position: "relative", overflow: "visible",
+              cursor: "default", transition: "border-color 0.3s",
             }}
           >
             {getBorderDecoration()}
@@ -191,18 +166,14 @@ export default function About() {
         ))}
       </motion.div>
 
-      {/* Bottom bar: season + CTA */}
       <motion.div
         variants={anim.item} transition={anim.transition}
         initial="hidden" whileInView="visible" viewport={viewportConfig}
         style={{
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
+          display: "flex", flexDirection: isMobile ? "column" : "row",
           alignItems: isMobile ? "flex-start" : "center",
-          justifyContent: "space-between",
-          gap: "16px",
-          paddingTop: "24px",
-          borderTop: `1px solid ${theme.colors.border}`,
+          justifyContent: "space-between", gap: "16px",
+          paddingTop: "24px", borderTop: `1px solid ${theme.colors.border}`,
         }}
       >
         <span style={{ fontSize: "0.78rem", color: theme.colors.textSecondary, opacity: 0.5, display: "flex", alignItems: "center", gap: "6px" }}>
@@ -211,13 +182,8 @@ export default function About() {
         <motion.a
           href="#projects"
           style={{
-            fontSize: "0.85rem",
-            fontWeight: 500,
-            color: theme.colors.primary,
-            textDecoration: "none",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
+            fontSize: "0.85rem", fontWeight: 500, color: theme.colors.primary,
+            textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px",
           }}
           whileHover={{ gap: "12px" }}
           transition={{ duration: 0.2 }}

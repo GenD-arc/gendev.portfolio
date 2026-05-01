@@ -1,4 +1,3 @@
-// config/themes.ts
 import { ThemeConfig } from "../types/theme";
 
 export const themes: ThemeConfig[] = [
