@@ -166,14 +166,12 @@ export const projects: Project[] = [
 
 // ─── Testimonials ───
 export const testimonials = [
-  /*
   {
-    quote: "Genesis built our e-commerce platform with performance I didn't think was possible on our budget.",
-    name: "Elena Rodriguez",
-    role: "Product Lead, Terra Market",
+    quote: "The GAJA app transformed how we manage our inventory and sales. It's a game-changer for small businesses like ours.",
+    name: "Maria Santos",
+    role: "Sari-Sari Store Owner",
     color: "#5B9BD5",
   }
-  */
 ];
 
 // ─── Navigation ───
