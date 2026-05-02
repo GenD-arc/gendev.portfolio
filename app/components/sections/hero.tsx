@@ -103,7 +103,7 @@ export default function Hero() {
 
   const stats = [
     { value: "1+", label: "Years" },
-    { value: "5", label: "Projects" },
+    { value: "6", label: "Projects" },
     { value: "2", label: "Clients" },
   ];
 

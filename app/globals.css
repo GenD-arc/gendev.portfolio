@@ -67,3 +67,7 @@
 .motion-div {
   will-change: transform, opacity;
 }
+
+.mobile-nav::-webkit-scrollbar {
+  display: none;
+}

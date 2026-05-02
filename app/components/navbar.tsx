@@ -5,7 +5,6 @@ import { useTheme } from "./theme-provider";
 import { motion, AnimatePresence } from "framer-motion";
 import { profile, navLinks as navData } from "../../data/profile";
 
-// Add icons to nav links
 const navLinks = navData.map((link) => {
   const icons: Record<string, string> = {
     Home: "🏠", About: "👤", Skills: "⚡", Work: "💼", Praise: "💬", Contact: "✉️",
@@ -42,7 +41,6 @@ export default function Navbar() {
     else setVisible(true);
     lastScrollY.current = currentY;
     setScrolled(currentY > 30);
-
     const sections = navLinks.map((link) => link.href.replace("#", ""));
     for (const section of sections.reverse()) {
       const el = document.getElementById(section);
@@ -80,6 +78,7 @@ export default function Navbar() {
     );
   }
 
+  // ─── MOBILE ───
   if (isMobile) {
     return (
       <>
@@ -112,19 +111,31 @@ export default function Navbar() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Scrollable bottom nav */}
         <motion.nav animate={{ y: visible ? 0 : 100, opacity: visible ? 1 : 0 }} transition={{ duration: 0.3, ease: "easeInOut" }}
-          style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 45, backgroundColor: `${theme.colors.surface}ee`, backdropFilter: "blur(20px) saturate(180%)", borderTop: `1px solid ${theme.colors.border}`, padding: "8px 12px", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
-          <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", maxWidth: "500px", margin: "0 auto" }}>
+          style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 45, backgroundColor: `${theme.colors.surface}ee`, backdropFilter: "blur(20px) saturate(180%)", borderTop: `1px solid ${theme.colors.border}`, padding: "8px 0", paddingBottom: "max(8px, env(safe-area-inset-bottom))" }}>
+          <div style={{
+            display: "flex", overflowX: "auto", scrollSnapType: "x proximity",
+            gap: "2px", padding: "0 8px", maxWidth: "500px", margin: "0 auto",
+            scrollbarWidth: "none", WebkitOverflowScrolling: "touch",
+          }}>
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace("#", "");
               return (
                 <motion.a key={link.href} href={link.href} whileTap={{ scale: 0.85 }}
                   onClick={(e) => { if (link.href === "#home" && activeSection === "home") { e.preventDefault(); setMobileOpen(true); } }}
-                  style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", padding: "6px 10px", borderRadius: "12px", textDecoration: "none", minWidth: "56px", position: "relative", transition: "all 0.2s" }}>
-                  <motion.span style={{ fontSize: "1.3rem", position: "relative", zIndex: 1 }}
-                    animate={{ scale: isActive ? 1.2 : 1, y: isActive ? -2 : 0 }} transition={{ type: "spring", stiffness: 400, damping: 20 }}>{link.icon}</motion.span>
-                  <span style={{ fontSize: "0.6rem", fontWeight: isActive ? 600 : 400, color: isActive ? theme.colors.primary : theme.colors.textSecondary, transition: "color 0.2s" }}>{link.label}</span>
-                  {isActive && <motion.div layoutId="bottomActive" style={{ position: "absolute", top: "-2px", left: "50%", transform: "translateX(-50%)", width: "24px", height: "2px", borderRadius: "1px", backgroundColor: theme.colors.primary }} transition={{ type: "spring", stiffness: 400, damping: 30 }} />}
+                  style={{
+                    display: "flex", flexDirection: "column", alignItems: "center", gap: "3px",
+                    padding: "6px 12px", borderRadius: "12px", textDecoration: "none",
+                    minWidth: "52px", flexShrink: 0, scrollSnapAlign: "center",
+                    position: "relative", transition: "all 0.2s",
+                  }}>
+                  <motion.span style={{ fontSize: "1.2rem", position: "relative", zIndex: 1 }}
+                    animate={{ scale: isActive ? 1.2 : 1, y: isActive ? -2 : 0 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}>{link.icon}</motion.span>
+                  <span style={{ fontSize: "0.55rem", fontWeight: isActive ? 600 : 400, color: isActive ? theme.colors.primary : theme.colors.textSecondary, transition: "color 0.2s", whiteSpace: "nowrap" }}>{link.label}</span>
+                  {isActive && <motion.div layoutId="bottomActive" style={{ position: "absolute", top: "-2px", left: "50%", transform: "translateX(-50%)", width: "20px", height: "2px", borderRadius: "1px", backgroundColor: theme.colors.primary }} transition={{ type: "spring", stiffness: 400, damping: 30 }} />}
                 </motion.a>
               );
             })}
@@ -135,6 +146,7 @@ export default function Navbar() {
     );
   }
 
+  // ─── DESKTOP ───
   return (
     <motion.nav initial={{ y: -100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
       style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 40, backdropFilter: scrolled ? "blur(20px) saturate(180%)" : "blur(4px)", backgroundColor: scrolled ? `${theme.colors.surface}dd` : "transparent", borderBottom: scrolled ? `1px solid ${theme.colors.border}` : "1px solid transparent", transition: "all 0.4s ease" }}>
