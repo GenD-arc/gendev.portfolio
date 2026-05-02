@@ -185,7 +185,7 @@ export default function Skills() {
         initial="hidden" whileInView="visible" viewport={viewportConfig}
         style={{ fontSize: "0.75rem", color: theme.colors.textSecondary, opacity: 0.4, marginTop: "28px", textAlign: "right" }}
       >
-        {themeName === "spring" && "🌱 Always growing — exploring Rust & WASM"}
+        {themeName === "spring" && "🌱 Always growing — exploring new things"}
         {themeName === "summer" && "☀️ In my element with these tools"}
         {themeName === "autumn" && "🍂 Years of practice, distilled"}
         {themeName === "winter" && "❄️ Sharpening for what's next"}
