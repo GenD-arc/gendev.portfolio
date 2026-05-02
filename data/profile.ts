@@ -17,7 +17,7 @@ export const profile = {
   name: "Genesis Perez",
   title: "Freelance Web & Mobile Developer",
   tagline: "I build high-performance web & mobile apps that users love.",
-  bio: "I'm Genesis — a freelance developer with 1+ years of experience crafting performant web and mobile applications. I am a graduating student from Manuel S. Enverga University Foundation-Candelaria Inc. and currently seeking for employment opportunities.",
+  bio: "I'm Genesis — a freelance developer with 1+ years of experience crafting performant web and mobile applications. I am a graduating Computer Science student from Manuel S. Enverga University Foundation-Candelaria Inc. and currently seeking for employment opportunities.",
   email: "zerepgen@gmail.com",
   location: "Quezon Province — Philippines",
   availability: "Available for projects/employment",
