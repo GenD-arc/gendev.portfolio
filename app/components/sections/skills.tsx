@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { SpringBorder, SummerBorder, AutumnBorder, WinterBorder } from "../seasonal-borders";
 import { skills } from "../../../data/profile";
 
-type SkillCategory = "Frontend" | "Backend" | "Mobile" | "Language" | "Tools" | "Design";
+type SkillCategory = "Frontend" | "Backend" | "Mobile" | "Language" | "Tools" | "Database";
 
 const skillsByCategory = skills.reduce((acc, skill) => {
   const cat = skill.category as SkillCategory;
@@ -21,7 +21,7 @@ const categoryMeta: Record<SkillCategory, { color: string; icon: string; label: 
   Mobile:   { color: "#A78BFA", icon: "◇", label: "Mobile" },
   Language: { color: "#FBBF24", icon: "⬡", label: "Languages" },
   Tools:    { color: "#F472B6", icon: "◫", label: "Tools" },
-  Design:   { color: "#FB923C", icon: "△", label: "Design" },
+  Database:   { color: "#FB923C", icon: "△", label: "Database" },
 };
 
 const seasonalAnims = {

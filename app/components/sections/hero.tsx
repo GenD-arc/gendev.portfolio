@@ -1,3 +1,4 @@
+// app/components/sections/hero.tsx
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
@@ -54,11 +55,19 @@ export default function Hero() {
   const { theme, themeName } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   useEffect(() => {
@@ -94,8 +103,8 @@ export default function Hero() {
 
   const stats = [
     { value: "1+", label: "Years" },
-    { value: "6", label: "Projects" },
-    { value: "3", label: "Clients" },
+    { value: "5", label: "Projects" },
+    { value: "2", label: "Clients" },
   ];
 
   if (!mounted) {
@@ -125,20 +134,23 @@ export default function Hero() {
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "fixed",
-          width: "600px",
-          height: "600px",
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${theme.colors.primary}06, transparent 70%)`,
-          pointerEvents: "none",
-          zIndex: 0,
-          transform: `translate(${mousePos.x - 300}px, ${mousePos.y - 300}px)`,
-          transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-          opacity: 0.6,
-        }}
-      />
+      {/* Ambient cursor glow — desktop only */}
+      {!isMobile && (
+        <div
+          style={{
+            position: "fixed",
+            width: "600px",
+            height: "600px",
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${theme.colors.primary}06, transparent 70%)`,
+            pointerEvents: "none",
+            zIndex: 0,
+            transform: `translate(${mousePos.x - 300}px, ${mousePos.y - 300}px)`,
+            transition: "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+            opacity: 0.6,
+          }}
+        />
+      )}
 
       <motion.div
         variants={anim.container}
@@ -146,8 +158,15 @@ export default function Hero() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        style={{ width: "100%", zIndex: 10, paddingTop: "60px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px", alignItems: "center" }}
+        style={{
+          width: "100%", zIndex: 10, paddingTop: isMobile ? "80px" : "60px",
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+          gap: isMobile ? "40px" : "60px",
+          alignItems: "center",
+        }}
       >
+        {/* Left column — Text */}
         <div>
           <motion.div variants={anim.item} transition={anim.itemTransition}>
             <span
@@ -275,65 +294,69 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div
-          variants={anim.item} transition={anim.itemTransition}
-          style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
-        >
-          <div
-            style={{
-              backgroundColor: `${theme.colors.surface}80`, backdropFilter: "blur(16px)",
-              border: `1px solid ${theme.colors.border}`, borderRadius: "16px",
-              padding: "28px 32px", fontFamily: "'Fira Code', 'JetBrains Mono', monospace",
-              fontSize: "0.8rem", lineHeight: 1.8, color: theme.colors.textSecondary,
-              position: "relative", overflow: "visible",
-              boxShadow: `0 20px 60px rgba(0,0,0,0.3)`, transform: "rotate(-2deg)",
-            }}
-          >
-            {getBorder("normal")}
-            {codeLines.map((line, i) => (
-              <motion.div
-                key={line}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 + i * 0.15, duration: 0.4 }}
-                style={{
-                  color: i === 1 || i === 4 ? theme.colors.primary :
-                         i === 2 ? "#60A5FA" :
-                         i === 5 ? theme.colors.textSecondary :
-                         theme.colors.textSecondary,
-                }}
-              >
-                {line}
-              </motion.div>
-            ))}
-            <motion.span
-              animate={{ opacity: [1, 0, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-              style={{
-                display: "inline-block", width: "8px", height: "16px",
-                backgroundColor: theme.colors.primary, marginLeft: "2px",
-                verticalAlign: "middle",
-              }}
-            />
-          </div>
-
-          <div style={{
-            position: "absolute", width: "300px", height: "300px",
-            borderRadius: "50%", border: `1px solid ${theme.colors.primary}10`,
-            zIndex: -1,
-          }} />
+        {/* Right column — Code snippet (desktop only) */}
+        {!isMobile && (
           <motion.div
-            style={{
-              position: "absolute", width: "200px", height: "200px",
-              borderRadius: "50%", border: `1px solid ${theme.colors.secondary}08`,
+            variants={anim.item} transition={anim.itemTransition}
+            style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <div
+              style={{
+                backgroundColor: `${theme.colors.surface}80`, backdropFilter: "blur(16px)",
+                border: `1px solid ${theme.colors.border}`, borderRadius: "16px",
+                padding: "28px 32px", fontFamily: "'Fira Code', 'JetBrains Mono', monospace",
+                fontSize: "0.8rem", lineHeight: 1.8, color: theme.colors.textSecondary,
+                position: "relative", overflow: "visible",
+                boxShadow: `0 20px 60px rgba(0,0,0,0.3)`, transform: "rotate(-2deg)",
+              }}
+            >
+              {getBorder("normal")}
+              {codeLines.map((line, i) => (
+                <motion.div
+                  key={line}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8 + i * 0.15, duration: 0.4 }}
+                  style={{
+                    color: i === 1 || i === 4 ? theme.colors.primary :
+                           i === 2 ? "#60A5FA" :
+                           i === 5 ? theme.colors.textSecondary :
+                           theme.colors.textSecondary,
+                  }}
+                >
+                  {line}
+                </motion.div>
+              ))}
+              <motion.span
+                animate={{ opacity: [1, 0, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+                style={{
+                  display: "inline-block", width: "8px", height: "16px",
+                  backgroundColor: theme.colors.primary, marginLeft: "2px",
+                  verticalAlign: "middle",
+                }}
+              />
+            </div>
+
+            <div style={{
+              position: "absolute", width: "300px", height: "300px",
+              borderRadius: "50%", border: `1px solid ${theme.colors.primary}10`,
               zIndex: -1,
-            }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          />
-        </motion.div>
+            }} />
+            <motion.div
+              style={{
+                position: "absolute", width: "200px", height: "200px",
+                borderRadius: "50%", border: `1px solid ${theme.colors.secondary}08`,
+                zIndex: -1,
+              }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            />
+          </motion.div>
+        )}
       </motion.div>
 
+      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

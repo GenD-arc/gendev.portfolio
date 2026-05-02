@@ -1,30 +1,11 @@
+// app/components/sections/testimonials.tsx
 "use client";
 
 import React, { useState, useEffect } from "react";
 import { useTheme } from "../theme-provider";
 import { motion } from "framer-motion";
 import { SpringBorder, SummerBorder, AutumnBorder, WinterBorder } from "../seasonal-borders";
-
-const testimonials = [
-  {
-    quote: "Genesis delivered our dashboard ahead of schedule. The attention to detail was remarkable — every interaction felt intentional.",
-    name: "Sarah Chen",
-    role: "CTO, Nebula Analytics",
-    color: "#7C3AED",
-  },
-  {
-    quote: "Working with Genesis felt like having an in-house senior developer. Clear communication, clean code, and a final product that exceeded our vision.",
-    name: "Marcus Torres",
-    role: "Founder, FlowPay",
-    color: "#E85D3A",
-  },
-  {
-    quote: "We needed a complex e-commerce platform and Genesis built it with performance I didn't think was possible on our budget. 40% faster load times than our old site.",
-    name: "Elena Rodriguez",
-    role: "Product Lead, Terra Market",
-    color: "#5B9BD5",
-  },
-];
+import { testimonials } from "../../../data/profile";
 
 export default function Testimonials() {
   const { theme, themeName } = useTheme();
@@ -37,7 +18,7 @@ export default function Testimonials() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || testimonials.length <= 1) return;
     const interval = setInterval(() => {
       setActive((prev) => (prev + 1) % testimonials.length);
     }, 5000);
@@ -54,28 +35,14 @@ export default function Testimonials() {
     }
   };
 
-  if (!mounted) {
-    return (
-      <section id="testimonials" style={{ position: "relative", padding: "100px 24px", maxWidth: "1100px", margin: "0 auto" }}>
-        <div style={{ textAlign: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "12px" }}>
-            <span style={{ width: "24px", height: "1px", background: theme.colors.primary, opacity: 0.5 }} />
-            <span style={{ fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: theme.colors.primary }}>Testimonials</span>
-            <span style={{ width: "24px", height: "1px", background: theme.colors.primary, opacity: 0.5 }} />
-          </div>
-          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 700, color: theme.colors.text, fontFamily: "var(--font-space)" }}>
-            What clients say
-          </h2>
-        </div>
-      </section>
-    );
+  if (!mounted || testimonials.length === 0) {
+    return null;
   }
 
   const t = testimonials[active];
 
   return (
     <section id="testimonials" style={{ position: "relative", padding: "120px 24px", maxWidth: "1100px", margin: "0 auto" }}>
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -93,7 +60,6 @@ export default function Testimonials() {
         </h2>
       </motion.div>
 
-      {/* Carousel */}
       <motion.div
         key={active}
         initial={{ opacity: 0, y: 10 }}
@@ -101,32 +67,23 @@ export default function Testimonials() {
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.5 }}
         style={{
-          maxWidth: "650px",
-          margin: "0 auto",
+          maxWidth: "650px", margin: "0 auto",
           backgroundColor: theme.colors.surface,
           border: `1px solid ${theme.colors.border}`,
-          borderRadius: "20px",
-          padding: "40px 36px",
-          position: "relative",
-          overflow: "visible",
-          textAlign: "center",
+          borderRadius: "20px", padding: "40px 36px",
+          position: "relative", overflow: "visible", textAlign: "center",
         }}
       >
         {getBorderDecoration(t.color)}
 
-        {/* Quote mark */}
         <div style={{ fontSize: "4rem", lineHeight: 0.5, color: `${t.color}30`, marginBottom: "20px", fontFamily: "Georgia, serif" }}>
           &ldquo;
         </div>
 
         <p style={{
-          fontSize: "1.05rem",
-          lineHeight: 1.7,
-          color: theme.colors.text,
-          margin: "0 0 24px",
-          maxWidth: "500px",
-          marginLeft: "auto",
-          marginRight: "auto",
+          fontSize: "1.05rem", lineHeight: 1.7, color: theme.colors.text,
+          margin: "0 0 24px", maxWidth: "500px",
+          marginLeft: "auto", marginRight: "auto",
         }}>
           {t.quote}
         </p>
@@ -140,24 +97,22 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* Dots */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "24px" }}>
-          {testimonials.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setActive(i)}
-              style={{
-                width: i === active ? "16px" : "6px",
-                height: "6px",
-                borderRadius: "3px",
-                border: "none",
-                cursor: "pointer",
-                backgroundColor: i === active ? t.color : `${theme.colors.textSecondary}20`,
-                transition: "all 0.3s",
-              }}
-            />
-          ))}
-        </div>
+        {testimonials.length > 1 && (
+          <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "24px" }}>
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActive(i)}
+                style={{
+                  width: i === active ? "16px" : "6px", height: "6px",
+                  borderRadius: "3px", border: "none", cursor: "pointer",
+                  backgroundColor: i === active ? t.color : `${theme.colors.textSecondary}20`,
+                  transition: "all 0.3s",
+                }}
+              />
+            ))}
+          </div>
+        )}
       </motion.div>
     </section>
   );

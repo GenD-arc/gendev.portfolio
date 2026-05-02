@@ -49,11 +49,27 @@ export default function Contact() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-  };
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setSubmitted(true);
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formState),
+    });
+
+    if (res.ok) {
+      setFormState({ name: "", email: "", message: "" });
+      setTimeout(() => setSubmitted(false), 3000);
+    } else {
+      setSubmitted(false);
+    }
+  } catch {
+    setSubmitted(false);
+  }
+};
 
   const anim = seasonalAnims[themeName] || seasonalAnims.winter;
   const viewportConfig = { once: true, margin: "-60px" };
@@ -70,7 +86,7 @@ export default function Contact() {
   };
 
   const contactInfo = [
-    { label: "Email", value: profile.email },
+    { label: "Email", value: profile.email, isLink: true },
     { label: "Location", value: profile.location },
     { label: "Availability", value: profile.availability },
   ];
@@ -78,7 +94,7 @@ export default function Contact() {
   const socialPlatforms = [
     { name: "GitHub", url: profile.socials.github },
     { name: "LinkedIn", url: profile.socials.linkedin },
-    { name: "Twitter", url: profile.socials.twitter },
+    { name: "Email", url: `mailto:${profile.email}` },
   ];
 
   const inputBaseStyle: React.CSSProperties = {
@@ -142,9 +158,23 @@ export default function Contact() {
               <div style={{ fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: theme.colors.textSecondary, opacity: 0.5, marginBottom: "4px" }}>
                 {item.label}
               </div>
-              <div style={{ fontSize: "0.95rem", fontWeight: 500, color: theme.colors.text }}>
-                {item.value}
-              </div>
+              {item.isLink ? (
+                <a
+                  href={`mailto:${item.value}`}
+                  style={{
+                    fontSize: "0.95rem", fontWeight: 500, color: theme.colors.primary,
+                    textDecoration: "none", transition: "opacity 0.2s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+                  onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+                >
+                  {item.value}
+                </a>
+              ) : (
+                <div style={{ fontSize: "0.95rem", fontWeight: 500, color: theme.colors.text }}>
+                  {item.value}
+                </div>
+              )}
             </div>
           ))}
 
