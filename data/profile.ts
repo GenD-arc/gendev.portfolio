@@ -119,7 +119,7 @@ export const projects: Project[] = [
     category: "web",
     color: "#5B9BD5",
     year: "2026",
-    result: "Live at genesis-perez.com",
+    result: "Live at https://gendev-portfolio.vercel.app/",
     //link: "https://genesis-perez.com",
     features: [
       "Four-season dynamic theme system",
