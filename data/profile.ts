@@ -17,10 +17,10 @@ export const profile = {
   name: "Genesis Perez",
   title: "Freelance Web & Mobile Developer",
   tagline: "I build high-performance web & mobile apps that users love.",
-  bio: "I'm Genesis — a freelance developer with 5+ years of experience crafting performant web and mobile applications. I partner with startups and agencies to ship products that users love.",
+  bio: "I'm Genesis — a freelance developer with 1+ years of experience crafting performant web and mobile applications. I am a graduating student from Manuel S. Enverga University Foundation-Candelaria Inc. and currently seeking for employment opportunities.",
   email: "zerepgen@gmail.com",
   location: "Quezon Province — Philippines",
-  availability: "Available for projects",
+  availability: "Available for projects/employment",
   socials: {
     github: "https://github.com/GenD-arc",
     linkedin: "https://www.linkedin.com/in/genesis-perez-018052370",
