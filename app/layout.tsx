@@ -23,7 +23,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Genesis Perez | Freelance Web & Mobile Developer",
+  title: "Genesis Perez | Mobile & Web Developer",
   description:
     "Genesis Perez — freelance web & mobile developer crafting performant, beautiful applications with Next.js, React, and Flutter. Available for projects worldwide.",
   keywords: [

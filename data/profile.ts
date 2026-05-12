@@ -60,7 +60,7 @@ export const projects: Project[] = [
   {
     title: "MSEUF-CI Resource Booking Portal",
     description: "Automated booking system for university resources with real-time availability.",
-    tags: ["Node.js", "Express", "Flutter", "Dart", "MySQL"],
+    tags: ["Flutter", "Dart", "Node.js", "Express", "MySQL"],
     category: "web",
     color: "#7C3AED",
     year: "2025",
@@ -111,6 +111,20 @@ export const projects: Project[] = [
       "User-friendly interface and easy to navigate",
       "Notifications for low stock, and utang alerts",
     ],
+  },
+  {
+    title: "EcoSense Mobile App",
+    description: "Mobile app to help users track the status of the enviroment(temperature, humidity, etc.) around their plants with indicators and warnings.",
+    tags: ["Flutter", "Dart", "Node.js", "Arduino Uno Kit"],
+    category: "mobile",
+    color: "#E85D3A",
+    year: "2026",
+    result: "Won first place in a local arduino exhibit",
+    features: [
+      "Real-time environmental monitoring with sensor integration",
+      "User-friendly interface with plant care tips and reminders",
+      "Data visualization with charts for temperature, humidity, and soil moisture",
+    ]
   },
   {
     title: "Web Portfolio",
